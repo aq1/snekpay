@@ -54,7 +54,7 @@ export async function POST({ request }: RequestEvent) {
 				address,
 				index,
 				webhook: result.data.webhook,
-				expiredAt: new Date((new Date()).getTime() + 180 * 60000),
+				expiredAt: new Date((new Date()).getTime() + 5 * 60 * 60000),
 				amount: result.data.amount
 			}
 		})

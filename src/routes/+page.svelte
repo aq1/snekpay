@@ -2,6 +2,9 @@
 	import { page } from '$app/stores'
 </script>
 
+<svelte:head>
+	<title>Snek Pay</title>
+</svelte:head>
 
 <div class='w-full flex flex-col justify-center items-center py-10 px-5 break-all'>
 	<div class='bg-white shadow-black shadow-card p-5 rounded-xl'>
@@ -36,7 +39,7 @@
 			<span class='pl-2'>"qr": "{$page.url.origin}/qr/clkztt8em0000i4aoxt9zr90u",</span><br>
 			<span class='pl-2 text-gray-500'>// Automatically generated address from your wallet</span><br>
 			<span class='pl-2'>"address": "1P8qs285ZZuYshK6zfFaYMhMT7JGFSVd1t",</span><br>
-			<span class='pl-2 text-gray-500'>// In BTC</span><br>
+			<span class='pl-2 text-gray-500'>//Decimal as string. In BTC</span><br>
 			<span class='pl-2'>"amount": "0.1234",</span><br>
 			<span class='pl-2 text-gray-500'>// Status could be CREATED, STALED, PAYED</span><br>
 			<span class='pl-2'>"status": "CREATED",</span><br>
@@ -44,7 +47,7 @@
 			<span class='pl-2'>"txId": "",</span><br>
 			<span class='pl-2'>"createdAt": "{new Date().toISOString()}",</span><br>
 			<span class='pl-2 text-gray-500'>// When will invoice expire</span><br>
-			<span class='pl-2'>"expiredAt": "{new Date((new Date()).getTime() + 180 * 60000).toISOString()}",</span><br>
+			<span class='pl-2'>"expiredAt": "{new Date((new Date()).getTime() + 5 * 60 * 60000).toISOString()}",</span><br>
 			<span class='pl-2 text-gray-500'>// Datetime of transaction in blockchain</span><br>
 			<span class='pl-2'>"payedAt": null,</span><br>
 			<span class='pl-2 text-gray-500'>// Index of address derivation.</span><br>
