@@ -9,5 +9,4 @@ RUN yarn build
 
 USER node:node
 
-RUN yarn add dotenv
 CMD ["node","-r dotenv/config build"]
