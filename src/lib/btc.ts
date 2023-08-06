@@ -140,7 +140,7 @@ async function processInvoice(invoice: Invoice) {
 }
 
 export async function checkTransactions() {
-	console.log('Checking transactions')
+	axiom.ingest('Checking transactions', {msg: 'check', lvl: 'info'})
 	const invoices = await prisma.invoice.findMany({
 		where: {
 			status: InvoiceStatus.CREATED
