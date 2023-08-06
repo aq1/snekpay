@@ -9,4 +9,4 @@ RUN yarn build
 
 USER node:node
 
-CMD ["node","-r dotenv/config build"]
+CMD ["node","build"]
