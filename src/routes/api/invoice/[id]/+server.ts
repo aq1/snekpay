@@ -1,5 +1,5 @@
 import type { RequestEvent } from '@sveltejs/kit'
-import { json } from '@sveltejs/kit'
+import { error, json } from '@sveltejs/kit'
 import { z } from 'zod'
 import getInvoiceData from '$lib/invoice'
 import { Prisma } from '@prisma/client'
@@ -10,7 +10,7 @@ const inputSchema = z.object({
 
 const outputSchema = z.object({
 	id: z.string(),
-	index: z.number().gt(0),
+	index: z.number().gte(0),
 	status: z.string(),
 	txId: z.string(),
 	createdAt: z.date(),
@@ -30,6 +30,11 @@ export async function GET({ params }: RequestEvent) {
 	}
 
 	const data = await getInvoiceData(result.data.id)
+
+	if (!data) {
+		throw error(404)
+	}
+
 	const outputResult = outputSchema.safeParse(data)
 
 	if (outputResult.success) {
