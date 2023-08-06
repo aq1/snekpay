@@ -1,4 +1,4 @@
-FROM node:18-alpine AS external-website
+FROM node:18-alpine
 
 WORKDIR /app
 
@@ -6,8 +6,6 @@ COPY . .
 
 RUN yarn --frozen-lockfile
 RUN yarn build
-
-RUN rm -rf src/ static/ emailTemplates/
 
 USER node:node
 
