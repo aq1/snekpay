@@ -10,6 +10,7 @@ const inputSchema = z.object({
 
 const outputSchema = z.object({
 	id: z.string(),
+	index: z.number().gt(0),
 	status: z.string(),
 	txId: z.string(),
 	createdAt: z.date(),

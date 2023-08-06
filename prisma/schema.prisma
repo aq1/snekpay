@@ -22,6 +22,7 @@ model Invoice {
   createdAt DateTime      @default(now())
   expiredAt DateTime
   payedAt   DateTime?
+  index     Int
   address   String
   amount    Decimal
 }

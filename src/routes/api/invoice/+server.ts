@@ -24,7 +24,7 @@ const inputSchema = z.object({
 })
 
 export async function POST({ request }: RequestEvent) {
-	let data, address
+	let data, address, index
 
 	try {
 		data = await request.json()
@@ -40,7 +40,9 @@ export async function POST({ request }: RequestEvent) {
 	}
 
 	try {
-		address = generateAddress(result.data.xpub)
+		const res = generateAddress(result.data.xpub)
+		address = res.address
+		index = res.index
 	} catch {
 		return json({ _errors: ['Invalid xpub key'] }, { status: 400 })
 	}
@@ -50,6 +52,7 @@ export async function POST({ request }: RequestEvent) {
 		invoice = await prisma.invoice.create({
 			data: {
 				address,
+				index,
 				webhook: result.data.webhook,
 				expiredAt: new Date((new Date()).getTime() + 180 * 60000),
 				amount: result.data.amount

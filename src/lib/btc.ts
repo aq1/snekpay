@@ -1,5 +1,5 @@
 // @ts-ignore: lib has no types
-import { Address, HDPublicKey, PublicKey } from 'bitcore-lib'
+import bitcoin from 'bitcore-lib'
 import { prisma } from '$lib/db'
 import { type Invoice, InvoiceStatus, Prisma } from '@prisma/client'
 import { z } from 'zod'
@@ -7,11 +7,14 @@ import { z } from 'zod'
 
 export default function generateAddress(xpub: string) {
 	const i = Math.floor(Math.random() * 2 * 31)
-	const hdPublicKey = HDPublicKey(xpub)
+	const hdPublicKey = bitcoin.HDPublicKey(xpub)
 	const orderPublicKey = hdPublicKey.deriveChild(`m/0/${i}`)
-	const pubkey = PublicKey(orderPublicKey.publicKey)
-	const address = Address.fromPublicKey(pubkey)
-	return address.toString()
+	const pubkey = bitcoin.PublicKey(orderPublicKey.publicKey)
+	const address = bitcoin.Address.fromPublicKey(pubkey)
+	return {
+		address: address.toString(),
+		index: i,
+	}
 }
 
 
@@ -33,7 +36,7 @@ const TXSchema = z.array(
 	})
 )
 
-async function sendWebhook(invoice: Invoice, tryN: number = 0) {
+async function sendWebhook(invoice: Invoice, tryN = 0) {
 	if (!invoice.webhook) {
 		return
 	}
