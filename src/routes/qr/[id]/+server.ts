@@ -16,7 +16,7 @@ export async function GET({ params, setHeaders }: RequestEvent) {
 	const invoice = await getInvoiceData(result.data.id)
 
 	if (!invoice) {
-		return new Response(null, { status: 400 })
+		return new Response(null, { status: 404 })
 	}
 
 	setHeaders({
