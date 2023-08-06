@@ -4,6 +4,17 @@
 
 <svelte:head>
 	<title>Snek Pay</title>
+	<meta content='Easy bitcoin payments' name='description' />
+	<meta content='Snek Pay' property='og:site_name' />
+	<meta content='Snek Pay' property='og:title' />
+	<meta content='Snek Pay' name='twitter:title' />
+	<meta content='Easy bitcoin payments' property='og:description' />
+	<meta content='Easy bitcoin payments' name='twitter:description' />
+	<meta content='summary_large_image' name='twitter:card' />
+	<meta content='{$page.url.origin}' property='og:url' />
+	<meta content='{$page.url.origin}' name='twitter:url' />
+	<meta content='{$page.url.origin}/og-index.png' property='og:image' />
+	<meta content='{$page.url.origin}/og-index.png' name='twitter:image' />
 </svelte:head>
 
 <div class='w-full flex flex-col justify-center items-center py-10 px-5 break-all'>
