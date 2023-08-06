@@ -4,11 +4,12 @@ import generateAddress from '$lib/btc'
 import { z } from 'zod'
 import getInvoiceData from '$lib/invoice'
 import { Prisma } from '@prisma/client'
+import axiom from '$lib/logs'
 
 const inputSchema = z.object({
 	xpub: z.string().min(1),
 	webhook: z.string(),
-	amount: z.string().nonempty().transform((val,  ctx) => {
+	amount: z.string().nonempty().transform((val, ctx) => {
 		const newVal = new Prisma.Decimal(val)
 		if (newVal.lte(0)) {
 			ctx.addIssue({
@@ -16,7 +17,7 @@ const inputSchema = z.object({
 				minimum: 0,
 				inclusive: false,
 				type: 'string',
-				message: 'Amount must be greater than zero',
+				message: 'Amount must be greater than zero'
 			})
 		}
 		return newVal
@@ -28,8 +29,8 @@ export async function POST({ request }: RequestEvent) {
 
 	try {
 		data = await request.json()
-	} catch (e) {
-		console.log(e)
+	} catch (err) {
+		axiom.ingest('snekpay', [{ lvl: 'err', msg: `Failed to send webhook ${err}` }])
 		return json({ _errors: ['Bad request body'] }, { status: 400 })
 	}
 

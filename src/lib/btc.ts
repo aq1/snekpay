@@ -3,6 +3,7 @@ import bitcoin from 'bitcore-lib'
 import { prisma } from '$lib/db'
 import { type Invoice, InvoiceStatus, Prisma } from '@prisma/client'
 import { z } from 'zod'
+import axiom from '$lib/logs'
 
 
 export default function generateAddress(xpub: string) {
@@ -13,7 +14,7 @@ export default function generateAddress(xpub: string) {
 	const address = bitcoin.Address.fromPublicKey(pubkey)
 	return {
 		address: address.toString(),
-		index: i,
+		index: i
 	}
 }
 
@@ -57,8 +58,9 @@ async function sendWebhook(invoice: Invoice, tryN = 0) {
 		if (!response.ok) {
 			throw new Error(await response.text())
 		}
-	} catch(err) {
-		console.log(`Failed to send webhook ${err}`)
+	} catch (err) {
+		axiom.ingest('snekpay', [{ lvl: 'warn', msg: `Failed to send webhook ${err}` }])
+
 		setTimeout(() => {
 			sendWebhook(invoice, tryN + 1)
 		}, 5000)
@@ -109,7 +111,15 @@ async function processInvoice(invoice: Invoice) {
 					continue
 				}
 
-				console.log(txDate, txValue, tx.txid)
+				axiom.ingest(
+					'snekpay',
+					[{
+						lvl: 'info',
+						msg: `Found TX`,
+						invoiceId: invoice.id,
+						tx: tx
+					}]
+				)
 
 				const updatedInvoice = await prisma.invoice.update({
 					where: {
