@@ -3,7 +3,6 @@
 FROM --platform=linux/amd64 node:16-alpine3.17 AS deps
 RUN apk add --no-cache libc6-compat openssl1.1-compat
 WORKDIR /app
-ENV NODE_ENV production
 
 COPY prisma ./
 COPY package.json yarn.lock* ./
