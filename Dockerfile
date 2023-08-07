@@ -1,13 +1,38 @@
-FROM node:18-alpine
+##### DEPENDENCIES
 
+FROM --platform=linux/amd64 node:16-alpine3.17 AS deps
+RUN apk add --no-cache libc6-compat openssl1.1-compat
 WORKDIR /app
 
+COPY prisma ./
+COPY package.json yarn.lock* ./
+RUN yarn --frozen-lockfile
+
+##### BUILDER
+
+FROM --platform=linux/amd64 node:16-alpine3.17 AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-RUN yarn --frozen-lockfile
 RUN yarn build
 
-RUN apk --no-cache add curl
-HEALTHCHECK CMD curl --fail http://localhost:3000/api/health || exit 1
+##### RUNNER
 
-CMD ["node","build"]
+FROM --platform=linux/amd64 node:16-alpine3.17 AS runner
+WORKDIR /app
+
+ENV NODE_ENV production
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 svelte
+
+COPY --from=builder /app/svelte.config.js ./
+COPY --from=builder /app/static ./static
+COPY --from=builder /app/package.json ./package.json
+
+COPY --from=builder --chown=svelte:nodejs /app/.svelite-kit/ ./.svelte-kit/
+
+USER svelte
+
+CMD ["node", "build"]
