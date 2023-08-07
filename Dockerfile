@@ -35,4 +35,4 @@ COPY --from=builder --chown=svelte:nodejs /app/build/ ./build
 
 USER svelte
 
-CMD ["node", "build"]
+CMD ["node", "-r", "dotenv/config", "build"]
