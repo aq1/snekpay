@@ -31,7 +31,7 @@ COPY --from=builder /app/svelte.config.js ./
 COPY --from=builder /app/static ./static
 COPY --from=builder /app/package.json ./package.json
 
-COPY --from=builder --chown=svelte:nodejs /app/.svelite-kit/ ./.svelte-kit/
+COPY --from=builder --chown=svelte:nodejs /app/build/ ./build
 
 USER svelte
 
