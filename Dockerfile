@@ -27,12 +27,11 @@ ENV NODE_ENV production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 svelte
 
-COPY --from=builder /app/svelte.config.js ./
-COPY --from=builder /app/static ./static
-COPY --from=builder /app/package.json ./package.json
-
-COPY --from=builder --chown=svelte:nodejs /app/.svelte-kit/ ./build
-COPY --from=builder --chown=svelte:nodejs /app/build/ ./.svelte-kit
+COPY --from=builder --chown=svelte:nodejs /app/svelte.config.js ./
+COPY --from=builder --chown=svelte:nodejs /app/static ./static
+COPY --from=builder --chown=svelte:nodejs /app/package.json ./package.json
+COPY --from=builder --chown=svelte:nodejs /app/.svelte-kit/ ./.svelte-kit
+COPY --from=builder --chown=svelte:nodejs /app/build/ ./build
 
 USER svelte
 
