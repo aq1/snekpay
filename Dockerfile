@@ -13,6 +13,8 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 RUN yarn build
+# to clean dev dependencies after build
+RUN yarn --frozen-lockfile
 
 FROM --platform=linux/amd64 node:16-alpine3.17 AS runner
 WORKDIR /app
