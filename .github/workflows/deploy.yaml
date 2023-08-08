@@ -20,7 +20,7 @@ jobs:
         cache: 'yarn'
 
     - run: yarn --dev --frozen-lockfile
-    - run: yarn build
+    - run: ls
     - run: yarn --prod --frozen-lockfile
 
     - uses: actions/upload-artifact@v3
