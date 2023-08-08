@@ -6,8 +6,10 @@ ENV NODE_ENV production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 svelte
 
-COPY --chown=svelte:nodejs . .
-RUN ls -la
+COPY --chown=svelte:nodejs ./node_modules ./
+COPY --chown=svelte:nodejs ./build ./
+COPY --chown=svelte:nodejs ./static ./
+COPY --chown=svelte:nodejs ./package.json ./
 
 USER svelte
 
