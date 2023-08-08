@@ -20,14 +20,14 @@ jobs:
         cache: 'yarn'
 
     - run: yarn --dev --frozen-lockfile
-    - run: ls
+    - run: ls ./node_modules
     - run: yarn --prod --frozen-lockfile
 
-    - uses: actions/upload-artifact@v3
-      with:
-        name: 'node-build'
-        path: |
-          ./package.json
-          ./node_modules
-          ./build
-          ./static
+#    - uses: actions/upload-artifact@v3
+#      with:
+#        name: 'node-build'
+#        path: |
+#          ./package.json
+#          ./node_modules
+#          ./build
+#          ./static
