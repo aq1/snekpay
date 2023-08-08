@@ -20,14 +20,6 @@ jobs:
         cache: 'yarn'
 
     - run: NODE_ENV=development yarn --frozen-lockfile
-    - run: ls ./node_modules
+    - run: yarn build
     - run: yarn --prod --frozen-lockfile
-
-#    - uses: actions/upload-artifact@v3
-#      with:
-#        name: 'node-build'
-#        path: |
-#          ./package.json
-#          ./node_modules
-#          ./build
-#          ./static
+    - run: docker build -t snekpay:latest .
