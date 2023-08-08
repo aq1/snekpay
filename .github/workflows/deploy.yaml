@@ -23,4 +23,8 @@ jobs:
     - run: yarn build
     - run: yarn --prod --frozen-lockfile
     - run: docker build -t snekpay:$(git rev-parse --short "$GITHUB_SHA") .
-    - run: docker save -o image.tar snekpay:latest
+    - run: docker save -o image.tar snekpay:$(git rev-parse --short "$GITHUB_SHA")
+    - uses: actions/upload-artifact@v3
+      with:
+        name: container.tar
+        path: image.tar
