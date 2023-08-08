@@ -36,6 +36,8 @@ jobs:
       run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/snekpay:$(git rev-parse --short "$GITHUB_SHA")
 
   deploy:
+    needs:
+      - build-and-push
     timeout-minutes: 3
     runs-on: ubuntu-latest
     steps:
