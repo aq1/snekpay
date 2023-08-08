@@ -1,0 +1,39 @@
+name: Build and Push to VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
+        run: docker build -t snekpay:latest .
+
+      - name: Save Docker image as tar
+        run: docker save -o image.tar snekpay:latest
+
+      - name: Copy Docker image to VPS
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          source: snekpay.tar
+          target: /tmp/snekpay.tar
+
+      - name: SSH into VPS and load Docker image
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          script: |
+            docker load -i /tmp/snekpay.tar
+            rm /tmp/image.tar
