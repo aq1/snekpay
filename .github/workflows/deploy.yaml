@@ -19,7 +19,7 @@ jobs:
         node-version: 18
         cache: 'yarn'
 
-    - run: yarn --dev --frozen-lockfile
+    - run: NODE_ENV=development yarn --frozen-lockfile
     - run: ls ./node_modules
     - run: yarn --prod --frozen-lockfile
 
