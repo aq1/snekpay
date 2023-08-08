@@ -7,6 +7,7 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 svelte
 
 COPY --chown=svelte:nodejs . .
+RUN ls -la
 
 USER svelte
 
