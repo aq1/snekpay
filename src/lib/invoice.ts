@@ -1,4 +1,4 @@
-import { ORIGIN } from '$env/static/private'
+import { env } from '$env/dynamic/private';
 
 import { prisma } from '$lib/db'
 import QRCode from 'qrcode'
@@ -12,11 +12,11 @@ export async function generateQR(address: string, amount: string) {
 }
 
 export function getInvoiceUrl(id: string) {
-	return `${ORIGIN}/i/${id}`
+	return `${env.ORIGIN}/i/${id}`
 }
 
 export function getQRUrl(id: string) {
-	return `${ORIGIN}/qr/${id}`
+	return `${env.ORIGIN}/qr/${id}`
 }
 
 export default async function getInvoiceData(id: string) {
