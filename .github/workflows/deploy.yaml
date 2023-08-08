@@ -22,5 +22,5 @@ jobs:
     - run: NODE_ENV=development yarn --frozen-lockfile
     - run: yarn build
     - run: yarn --prod --frozen-lockfile
-    - run: ls -a
-    - run: docker build -t snekpay:latest .
+#    - run: ls -a
+    - run: ls -a | docker build -t snekpay:latest .
