@@ -23,3 +23,8 @@ jobs:
     - run: yarn build
     - run: yarn --prod --frozen-lockfile
     - run: docker build -t snekpay:latest .
+    - run: docker save -o image.tar snekpay:latest
+    - uses: actions/upload-artifact@v3
+      with:
+        name: container.tar
+        path: image.tar
