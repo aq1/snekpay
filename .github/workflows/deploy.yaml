@@ -29,14 +29,14 @@ jobs:
         yarn build
         yarn --prod --frozen-lockfile
     - name: Build docker
-      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/snekpay:${{ env.TAG }}" .
+      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/snekpay:${{ env.TAG }} .
     - name: Login to Docker Hub
       uses: docker/login-action@v1
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Push to Docker Hub
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/snekpay:${{ env.TAG }}"
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/snekpay:${{ env.TAG }}
 
   deploy:
     needs:
@@ -56,7 +56,7 @@ jobs:
           key: ${{ secrets.KEY }}
           script: |
             echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/snekpay:${{ env.TAG }}"
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/snekpay:${{ env.TAG }}
             docker stop snekpay
             docker rm snekpay
-            docker run -d --name snekpay --env-file ~/snekpay/.env --network bond ${{ secrets.DOCKERHUB_USERNAME }}/snekpay:${{ env.TAG }}"
+            docker run -d --name snekpay --env-file ~/snekpay/.env --network bond ${{ secrets.DOCKERHUB_USERNAME }}/snekpay:${{ env.TAG }}
